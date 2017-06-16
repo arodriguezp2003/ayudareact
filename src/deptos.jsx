@@ -1,8 +1,9 @@
 import React from 'react';
+import New from './new';
 
 export default class Deptos extends React.Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
 
     this.state = {
       deptos: [
@@ -14,11 +15,18 @@ export default class Deptos extends React.Component {
         }
       ]
     }
+    this.handleAdd = this.handleAdd.bind(this);
+  }
+  handleAdd(depto) {
+    var arr = this.state.deptos;
+    arr.push(depto);
+    this.setState({deptos: arr});
   }
   render() {
     return(
       <div>
         <h1>Listado de Departamentos</h1>
+        <New wtf={this.handleAdd}/>
         <hr/>
         <table>
           <thead>
