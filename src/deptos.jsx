@@ -1,38 +1,36 @@
 import React from 'react';
 import New from './new';
+import firebase from 'firebase';
 
 export default class Deptos extends React.Component {
   constructor(props){
     super(props);
 
     this.state = {
-      deptos: [
-        {
-          id: 1, name: "DEPTO1"
-        },
-        {
-          id:2, name: "DEPTO2"
-        }
-      ]
+      depto: {},
+      deptos: []
     }
-    this.handleAdd = this.handleAdd.bind(this);
+
+    firebase.database().ref('DEPTOS/').on('value', snap => {
+       let deptos = snap.val()
+       console.log(deptos);
+       this.setState({deptos:deptos});
+    })
+    this.renderTable = this.renderTable.bind(this);
   }
-  handleAdd(depto) {
-    var arr = this.state.deptos;
-    arr.push(depto);
-    this.setState({deptos: arr});
-  }
+
   render() {
     return(
       <div>
         <h1>Listado de Departamentos</h1>
-        <New wtf={this.handleAdd}/>
+        <New />
         <hr/>
         <table>
           <thead>
             <tr>
               <td>Id</td>
               <td>Nombre</td>
+              <td>seleccionar</td>
             </tr>
           </thead>
           <tbody>
@@ -48,6 +46,12 @@ export default class Deptos extends React.Component {
         <tr key={depto.id}>
           <td>{depto.id}</td>
           <td>{depto.name}</td>
+          <td>
+            <button onClick={()=> {
+              this.setState({depto: depto})
+              console.log(depto)
+            }}>seleccionar</button>
+          </td>
         </tr>
       )
     })

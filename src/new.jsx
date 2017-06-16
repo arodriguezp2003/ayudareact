@@ -1,15 +1,16 @@
 import React, {Component} from 'react';
-
+import firebase from 'firebase';
 export default class New extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      id: 0 ,
-      name: ""
+      id: this.props.depto.id ,
+      name:this.props.depto.name
     }
     this.handleId = this.handleId.bind(this);
     this.handleName = this.handleName.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
   }
 handleId(e) {
   let txt = e.target.value;
@@ -24,8 +25,7 @@ handleName(e) {
 handleSubmit(e) {
   e.preventDefault();
   let depto = this.state;
-
-  this.props.wtf(depto);
+  firebase.database().ref('DEPTOS/' + depto.id).set(depto);
 }
 
   render(){
